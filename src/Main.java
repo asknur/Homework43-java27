@@ -22,12 +22,12 @@ public class Main {
     }
 
     private static void initRoutes(HttpServer server) {
-        server.createContext("/", Main::handleRequest);
-        server.createContext("/apps/", Main::handleRequest);
-        server.createContext("/apps/profile", Main::handleRequest);
+        server.createContext("/", Main::handleRootRequest);
+        server.createContext("/apps/", Main::handleAppsRequest);
+        server.createContext("/apps/profile", Main::handleProfileRequest);
     }
 
-    private static void handleRequest(HttpExchange exchange) {
+    private static void handleRequest(HttpExchange exchange, String msg) {
         try {
             exchange.getResponseHeaders().add("Content-Type", "text/plain; charset=utf-8");
             int responseCode = 200;
@@ -49,6 +49,18 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void handleRootRequest(HttpExchange exchange) {
+        handleRequest(exchange, "Hello :) It's Root");
+    }
+
+    private static void handleAppsRequest(HttpExchange exchange){
+        handleRequest(exchange, "Hello :) It's App");
+    }
+
+    private static void handleProfileRequest(HttpExchange exchange){
+        handleRequest(exchange, "Hello :) It's Profile");
     }
 
     private static PrintWriter getWriterFrom(HttpExchange exchange) {
